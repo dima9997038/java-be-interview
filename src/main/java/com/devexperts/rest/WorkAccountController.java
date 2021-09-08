@@ -95,10 +95,14 @@ public class WorkAccountController {
     public String current_transfer_add (@RequestParam  Long source_id, @RequestParam Long target_id, @RequestParam Double amount
             , Model model) {
 
-           Transfer transfer = new Transfer(source_id, target_id, amount, new Timestamp(System.currentTimeMillis()));
-            transferRepository.save(transfer);
-
-
+        Transfer transfer = new Transfer(source_id, target_id, amount, new Timestamp(System.currentTimeMillis()));
+        transferRepository.save(transfer);
+        Account account1 = accountRepository.findById(source_id).orElseThrow();
+        Account account2 = accountRepository.findById(target_id).orElseThrow();
+        account1.setBalance(account1.getBalance() - amount);
+        account2.setBalance(account2.getBalance() + amount);
+        accountRepository.save(account1);
+        accountRepository.save(account2);
 
 
         return "redirect:/account";
