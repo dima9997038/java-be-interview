@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -91,6 +92,7 @@ public class WorkAccountController {
         return "transfer";
     }
 
+    @Transactional
     @PostMapping("/transfer/add")
     public String current_transfer_add (@RequestParam  Long source_id, @RequestParam Long target_id, @RequestParam Double amount
             , Model model) {
